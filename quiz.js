@@ -20,7 +20,7 @@ function Question(theQuestion, theChoices, theCorrectAnswer) {
    };
 
 // A confirmation message that the question was created
-   console.log("Quiz Created On: " + this.getQuizDate());
+  //  console.log("Quiz Created On: " + this.getQuizDate());
 
 }
 
