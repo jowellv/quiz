@@ -20,8 +20,7 @@ function Question(theQuestion, theChoices, theCorrectAnswer) {
    };
 
 // A confirmation message that the question was created
-  //  console.log("Quiz Created On: " + this.getQuizDate());
-//this is a test
+    console.log("Quiz Created On: " + this.getQuizDate());
 }
 
 
@@ -94,12 +93,12 @@ $("#showQuestion").on("click","#score", function() {
 $("#showQuestion").on("click","#submit", function() {
   quiz.submit();
   $("#submit").hide();
-  if(quiz.nextQuestion()) {
+  if(quiz.nextQuestion()) { // checks if there is a next question
     var next = $('<button id="next">Next Question</button>');
     $('#showQuestion').append(next);
   } else {
     var score = $('<button id="score">Show Score</button>');
-    $('#showQuestion').append(score);
+    $('#showQuestion').append(score); //score is html 
   }
 });
 
@@ -113,7 +112,7 @@ var Quiz = function() {
                      new MultipleChoiceQuestion("What is the Capital of Brazil?", ["São Paulo", "Rio de Janeiro", "Brasília"], 2),
                      new MultipleChoiceQuestion("What is the population of Japan?", ["130mil", "150mil", "170mil","200mil"], 0)];
   this.start = function() {
-    curr = 0;
+    curr = 0; // resets the current index
   };
 
   this.nextQuestion = function () {
