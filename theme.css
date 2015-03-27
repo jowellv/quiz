@@ -1,0 +1,18 @@
+
+.centered {
+  width: 800px;
+  margin: 0 auto;
+
+}
+
+html {
+  font-family: sans-serif;
+}
+
+li {
+  list-style-type: none;
+}
+
+body {
+  background-color:silver;
+}
