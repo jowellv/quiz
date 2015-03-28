@@ -98,12 +98,9 @@ $("#showQuestion").on("click","#submit", function() {
     $('#showQuestion').append(next);
   } else {
     var score = $('<button id="score">Show Score</button>');
-    $('#showQuestion').append(score); //score is html 
+    $('#showQuestion').append(score); //score is html
   }
 });
-
-
-
 
 var Quiz = function() {
   var curr = 0;
