@@ -53,9 +53,6 @@ function MultipleChoiceQuestion(theQuestion, theChoices, theCorrectAnswer){
 
 MultipleChoiceQuestion.prototype = Object.create(Question.prototype);
 
-
-//In our real Quiz application, we would create a Quiz constructor that is the main application that launches the quiz, but in this article, we can test our inheritance code by simply doing this:
-
 var quiz;
 
 $(document).ready(function(){
@@ -68,6 +65,8 @@ $(document).ready(function(){
   });
 });
 
+// QUESTION: Should I have to create a handler for each button
+
 //set user answer on answer selection
 $("#showQuestion").on("click","input", function() {
   quiz.getQuestion().userAnswer = $("input:checked").val();
@@ -79,8 +78,17 @@ $("#showQuestion").on("click","input", function() {
 
 //User presses the next button
 $("#showQuestion").on("click","#next", function() {
-    quiz.showQuestion();
+  $("#next").prop('disabled', true);
+  quiz.showQuestion();
 });
+
+//User presses back button
+$("#showQuestion").on("click","#prev", function() {
+  $("#prev").prop('disabled', true);
+  quiz.prev();
+  quiz.showQuestion();
+});
+
 
 //User presses show score button
 $("#showQuestion").on("click","#score", function() {
@@ -92,6 +100,7 @@ $("#showQuestion").on("click","#score", function() {
 //Users presses the submit button
 $("#showQuestion").on("click","#submit", function() {
   quiz.submit();
+  $("#submit").prop('disabled', true);
   $("#submit").hide();
   if(quiz.nextQuestion()) { // checks if there is a next question
     var next = $('<button id="next">Next Question</button>');
@@ -105,20 +114,53 @@ $("#showQuestion").on("click","#submit", function() {
 var Quiz = function() {
   var curr = 0;
   var correct = 0;
-  var allQuestions = [new MultipleChoiceQuestion("Who is Prime Minister of England?", ["Obama", "Blair", "Brown", "Cameron"], 3),
+  var answers = [];
+  var allQuestions = [];
+  /* var allQuestions = [new MultipleChoiceQuestion("Who is Prime Minister of England?", ["Obama", "Blair", "Brown", "Cameron"], 3),
                      new MultipleChoiceQuestion("What is the Capital of Brazil?", ["São Paulo", "Rio de Janeiro", "Brasília"], 2),
-                     new MultipleChoiceQuestion("What is the population of Japan?", ["130mil", "150mil", "170mil","200mil"], 0)];
+                     new MultipleChoiceQuestion("What is the population of Japan?", ["130mil", "150mil", "170mil","200mil"], 0)]; */
+
+  $.getJSON("https://api.myjson.com/bins/19tof", function(data) {
+    $.each( data, function(key, val) {
+      val.forEach(function(elem) {
+        allQuestions.push(new MultipleChoiceQuestion(elem.question, elem.answers, elem.correct));
+      });
+    });
+  });
+
   this.start = function() {
     curr = 0; // resets the current index
   };
 
-  this.nextQuestion = function () {
+  this.nextQuestion = function() {
     curr++;
     return curr < allQuestions.length;
   };
 
+  this.prev = function() {
+    curr--;
+  };
+
+  this.firstQuestion = function() {
+    return curr === 0 ? true : false;
+  };
+
   this.showQuestion = function () {
-    $('#showQuestion').html(quiz.getQuestion().displayQuestion());
+    $('#showQuestion').fadeOut('slow', complete);
+    // $('#showQuestion').hide();
+    function complete() {
+      $('#showQuestion').html(quiz.getQuestion().displayQuestion());
+      $('#showQuestion').fadeIn();
+      if(!quiz.firstQuestion()) {
+        var prev = $('<button id="prev"><< Back</button>');
+        $('#showQuestion').append(prev);
+      }
+      if(answers[curr]){
+        $('#'+ answers[curr]).prop('checked', true);
+        var submit = $('<button id="submit">Submit Answer</button>');
+        $('#showQuestion').append(submit);
+      }
+    }
   };
 
   this.getQuestion = function() {
@@ -126,6 +168,7 @@ var Quiz = function() {
   };
 
   this.submit = function() {
+    answers[curr] = (quiz.getQuestion().getUserAnswer());
     correct += quiz.getQuestion().getUserAnswer() == quiz.getQuestion().getCorrectAnswer() ? 1 : 0;
   };
 

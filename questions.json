@@ -1,0 +1,30 @@
+{
+  "questions": [
+    {
+      "question": "Who is Prime Minister of England?",
+      "answers": [
+        "Obama",
+        "Blair",
+        "Brown",
+        "Cameron"
+      ],
+      "correct": 3 },
+      {
+        "question": "What is the Capital of Brazil?",
+        "answers": [
+          "São Paulo",
+          "Rio de Janeiro",
+          "Brasília"
+        ],
+        "correct": 2 },
+      {
+        "question": "What is the population of Japan?",
+        "answers": [
+          "130mil",
+          "150mil",
+          "170mil",
+          "200mil"
+        ],
+        "correct": 0 }
+  ]
+}
